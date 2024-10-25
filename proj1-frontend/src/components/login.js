@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import apiUrl from '../env';
 
 function Login({ userType, onGoBack }) {
   const [userId, setUserId] = useState('');
@@ -14,13 +15,27 @@ function Login({ userType, onGoBack }) {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Replace with actual authentication logic
-    if (userId === 'admin' && password === 'password') {
-      setMessage(`Welcome to the ${userType} Landing Page!`);
-    } else {
-      setMessage('Login Incorrect. Please try again.');
-    }
+    // if (userId === 'admin' && password === 'password') {
+    //   setMessage(`Welcome to the ${userType} Landing Page!`);
+    // } else {
+    //   setMessage('Login Incorrect. Please try again.');
+    // }
+
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+        password,
+      }),
+    });
+
+    console.log(response)
+
   };
 
   return (
