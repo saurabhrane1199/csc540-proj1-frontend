@@ -23,7 +23,7 @@ function Login({ userType, onGoBack }) {
     //   setMessage('Login Incorrect. Please try again.');
     // }
 
-    const response = await fetch('/login', {
+    const response = await fetch(`${apiUrl}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
