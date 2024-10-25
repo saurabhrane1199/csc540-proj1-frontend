@@ -3,11 +3,26 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './components/login';
+import AdminLandingPage from './components/admin/AdminLandingPage';
+import FacultyLandingPage from './components/faculty/FacultyLandingPage';
+import TALandingPage from './components/ta/TALandingPage';
+import StudentLandingPage from './components/student/StudentLandingPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/admin" element={<AdminLandingPage />}></Route>
+        <Route path="/faculty" element={<FacultyLandingPage />}></Route>
+        <Route path="/ta" element={<TALandingPage />}></Route>
+        <Route path="/student" element={<StudentLandingPage />}></Route>
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 
