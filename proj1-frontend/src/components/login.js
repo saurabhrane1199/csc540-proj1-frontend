@@ -1,40 +1,51 @@
 import React, { useState } from 'react';
 import apiUrl from '../env';
+import { csrftoken } from './../csrftoken';
 
 function Login({ userType, onGoBack }) {
-  const [userId, setUserId] = useState('');
+  const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (name === 'userId') {
-      setUserId(value);
+    if (name === 'username') {
+      setusername(value);
     } else if (name === 'password') {
       setPassword(value);
     }
   };
 
   const handleSubmit = async () => {
-    // Replace with actual authentication logic
-    // if (userId === 'admin' && password === 'password') {
-    //   setMessage(`Welcome to the ${userType} Landing Page!`);
-    // } else {
-    //   setMessage('Login Incorrect. Please try again.');
-    // }
+    try {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/login/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,  // CSRF token from the cookie
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                username,
+                password,
+            }),
+        });
 
-    const response = await fetch(`${apiUrl}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId,
-        password,
-      }),
-    });
+        if (!response.ok) {
+            throw new Error('Login failed');
+        }
 
-    console.log(response)
+        const data = await response.json();
+        console.log(data);
+        if (data.message === 'success') {
+            setMessage("Welcome ${userType}!");
+        } else {
+            setMessage('Login Incorrect. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        setMessage('An error occurred. Please try again later.');
+    }
 
   };
 
@@ -43,10 +54,10 @@ function Login({ userType, onGoBack }) {
       <h1>{userType} Login</h1>
       <input
         type="text"
-        name="userId"
-        value={userId}
+        name="username"
+        value={username}
         onChange={handleInputChange}
-        placeholder="User ID"
+        placeholder="Username"
       />
       <input
         type="password"
