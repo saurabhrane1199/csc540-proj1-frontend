@@ -38,8 +38,8 @@ function Login() {
         },
         credentials: 'include',
         body: JSON.stringify({
-          "username" : username,
-          "password" : password,
+          "username": username,
+          "password": password,
         }),
       });
 
@@ -50,7 +50,7 @@ function Login() {
       const data = await response.json();
       console.log(data);
       if (data.message === 'success') {
-        setMessage("Welcome ${userType}!");
+        setMessage(`Welcome ${userType}!`);
       } else {
         setMessage('Login Incorrect. Please try again.');
       }

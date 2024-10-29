@@ -1,8 +1,45 @@
 import React, { useState } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { csrftoken } from "../../csrftoken";
 
 function AddNewSection({ onGoBack, onGoLandingPage, onAddContentBlock }) {
     const [sectionNumber, setSectionNumber] = useState("");
     const [sectionTitle, setSectionTitle] = useState("");
+    const [showNextOptions, setshowNextOptions] = useState(false)
+    const navigate = useNavigate();
+
+    const location = useLocation();
+
+    const [chapterID, setChapterID] = useState(location.state?.chapterID || null)
+
+    const handleCreateSection = () => {
+
+        fetch(`${process.env.REACT_APP_SERVER_URL}/sections/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,  // CSRF token from the cookie
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+
+                "chapter_id": chapterID,
+                "number": sectionNumber,      //provided by user
+                "title": "Sorting", //provided by user
+                "section_id": 1.1, //TODO
+                "hidden": false   //default: False
+
+            }),
+
+        })
+            .then((response) => {
+                console.log(response)
+                alert("Section created")
+                setshowNextOptions(true)
+            })
+            .catch((error) => console.error(error));
+
+    }
 
     const handleDiscard = () => {
         // Clear the input fields and go back to the previous page
@@ -29,6 +66,17 @@ function AddNewSection({ onGoBack, onGoLandingPage, onAddContentBlock }) {
     return (
         <div>
             <h3>Add New Section</h3>
+
+            {!chapterID ? (<label>
+                Chapter ID:
+                <input
+                    type="text"
+                    value={chapterID}
+                    onChange={(e) => setChapterID(e.target.value)}
+                />
+            </label>) : null}
+
+
             <label>
                 Section Number:
                 <input
@@ -46,10 +94,12 @@ function AddNewSection({ onGoBack, onGoLandingPage, onAddContentBlock }) {
                     onChange={(e) => setSectionTitle(e.target.value)}
                 />
             </label>
+            <button onClick={handleCreateSection}>Create Section</button>
             <br />
-            <button onClick={handleAddContentBlock}>1. Add New Content Block</button>
-            <button onClick={handleDiscard}>2. Go Back</button>
-            <button onClick={handleLandingPage}>3. Landing Page</button>
+            {showNextOptions ?
+                <><button onClick={handleAddContentBlock}>1. Add New Content Block</button>
+                    <button onClick={handleDiscard}>2. Go Back</button>
+                    <button onClick={handleLandingPage}>3. Landing Page</button></> : null}
         </div>
     );
 }
