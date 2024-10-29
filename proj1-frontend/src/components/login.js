@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 import apiUrl from '../env';
 import { csrftoken } from './../csrftoken';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-function Login({ userType, onGoBack }) {
+function Login() {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const userType = location.state.currentUserType || '';
+
+  const onGoBack = () => {
+    navigate('/')
+  }
+
+
+
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -18,33 +30,33 @@ function Login({ userType, onGoBack }) {
 
   const handleSubmit = async () => {
     try {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/login/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,  // CSRF token from the cookie
-            },
-            credentials: 'include',
-            body: JSON.stringify({
-                username,
-                password,
-            }),
-        });
+      const response = await fetch(`${apiUrl}/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken,  // CSRF token from the cookie
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          "username" : username,
+          "password" : password,
+        }),
+      });
 
-        if (!response.ok) {
-            throw new Error('Login failed');
-        }
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
 
-        const data = await response.json();
-        console.log(data);
-        if (data.message === 'success') {
-            setMessage("Welcome ${userType}!");
-        } else {
-            setMessage('Login Incorrect. Please try again.');
-        }
+      const data = await response.json();
+      console.log(data);
+      if (data.message === 'success') {
+        setMessage("Welcome ${userType}!");
+      } else {
+        setMessage('Login Incorrect. Please try again.');
+      }
     } catch (error) {
-        console.error('Error:', error);
-        setMessage('An error occurred. Please try again later.');
+      console.error('Error:', error);
+      setMessage('An error occurred. Please try again later.');
     }
 
   };

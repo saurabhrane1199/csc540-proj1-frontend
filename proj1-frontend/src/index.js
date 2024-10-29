@@ -9,6 +9,8 @@ import AdminLandingPage from './components/admin/AdminLandingPage';
 import FacultyLandingPage from './components/faculty/FacultyLandingPage';
 import TALandingPage from './components/ta/TALandingPage';
 import StudentLandingPage from './components/student/StudentLandingPage'
+import AddNewChapter from './components/create-chapters/AddNewChapter';
+import AddNewSection from './components/create-section/AddNewSection'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +20,8 @@ root.render(
         <Route path="/" element={<App />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/admin" element={<AdminLandingPage />}></Route>
+        <Route path="/create/chapter" element={<AddNewChapter />}></Route>
+        <Route path="/create/section" element={<AddNewSection />}></Route>
         <Route path="/faculty" element={<FacultyLandingPage />}></Route>
         <Route path="/ta" element={<TALandingPage />}></Route>
         <Route path="/student" element={<StudentLandingPage />}></Route>

@@ -27,25 +27,25 @@ function App() {
         alert('Invalid choice. Please enter a number between 1 and 5.');
     }
 
-    navigate('/login', { state: { currentUserType } });
+    navigate('/login', { state: { currentUserType }, });
 
   };
 
   return (
     <div>
- 
-         <h1>Menu</h1>
-          <ul>
-            <li>1. Admin Login</li>
-            <li>2. Faculty Login</li>
-            <li>3. TA Login</li>
-            <li>4. Student Login</li>
-            <li>5. Exit</li>
-          </ul>
-          <input
-            type="text"
-            placeholder="Enter Choice (1-5)"
-            onChange={(e) => handleMenuChoice(e.target.value)}/>
+
+      <h1>Menu</h1>
+      <ul>
+        <li>1. Admin Login</li>
+        <li>2. Faculty Login</li>
+        <li>3. TA Login</li>
+        <li>4. Student Login</li>
+        <li>5. Exit</li>
+      </ul>
+      <input
+        type="text"
+        placeholder="Enter Choice (1-5)"
+        onChange={(e) => handleMenuChoice(e.target.value)} />
     </div >
   );
 }

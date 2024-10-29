@@ -1,0 +1,19 @@
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    cursor: pointer;
+    margin: 5px 0;
+}
+
+li:hover {
+    text-decoration: underline;
+}
+
+.page-content {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
