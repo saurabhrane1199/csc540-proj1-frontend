@@ -51,6 +51,7 @@ function Login() {
       console.log(data);
       if (data.message === 'success') {
         setMessage(`Welcome ${userType}!`);
+        navigate('/admin')
       } else {
         setMessage('Login Incorrect. Please try again.');
       }
