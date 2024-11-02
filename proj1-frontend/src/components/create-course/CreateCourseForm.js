@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import apiUrl from '../../env';
+import { csrftoken } from '../../csrftoken';
+import { useNavigate } from 'react-router-dom';
 
-const CreateCourseForm = ({ onSave, onCancel, onLandingPage }) => {
+const CreateCourseForm = ({ onGoBack }) => {
     const [courseDetails, setCourseDetails] = useState({
         courseId: '',
         courseName: '',
@@ -13,6 +16,8 @@ const CreateCourseForm = ({ onSave, onCancel, onLandingPage }) => {
     });
     const [menuChoice, setMenuChoice] = useState(null);
 
+    const navigate = useNavigate()
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setCourseDetails((prevDetails) => ({
@@ -21,14 +26,34 @@ const CreateCourseForm = ({ onSave, onCancel, onLandingPage }) => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (menuChoice === 1) {
-            onSave(courseDetails);
+            const response = await fetch(`${apiUrl}/courses/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,  // CSRF token from the cookie
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    "course_token": courseDetails.token,
+                    "course_name": courseDetails.courseName,
+                    "course_id": courseDetails.courseId,
+                    "course_type": "active",
+                    "course_capacity": courseDetails.capacity,
+                    "start_date": courseDetails.startDate,
+                    "end_date": courseDetails.endDate,
+                    "faculty_id": courseDetails.facultyMemberId,
+                    "textbook_id": courseDetails.textbook_id
+                }),
+            });
+
+            console.log(response)
         } else if (menuChoice === 2) {
-            onCancel();
+            onGoBack();
         } else if (menuChoice === 3) {
-            onLandingPage();
+            onGoBack();
         }
     };
 
@@ -141,8 +166,12 @@ const CreateCourseForm = ({ onSave, onCancel, onLandingPage }) => {
                     />
                 </label>
 
-                <button type="submit">Submit</button>
+                <button onClick={handleSubmit}>Submit</button>
             </form>
         </div>
     );
 };
+
+
+
+export default CreateCourseForm

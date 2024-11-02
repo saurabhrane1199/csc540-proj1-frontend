@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { csrftoken } from "../../csrftoken";
 
-function AddNewChapter({ onGoBack, onGoLandingPage, onAddSection }) {
+function AddNewChapter() {
     const [chapterID, setChapterID] = useState("");
     const [chapterTitle, setChapterTitle] = useState("");
     const [showNextOptions, setshowNextOptions] = useState(false)
+
 
     const navigate = useNavigate();
 
     const location = useLocation();
 
+    const [isModifyEnabled, setModifyEnabled] = useState(location.state?.isModifyChapter || null)
     const [textbookId, setETextbookID] = useState(location.state?.textbookId || null)
 
     const handleCreateChapter = () => {
@@ -41,19 +43,19 @@ function AddNewChapter({ onGoBack, onGoLandingPage, onAddSection }) {
         // Clear the input fields and go back to the previous page
         setChapterID("");
         setChapterTitle("");
-        onGoBack();
+        //onGoBack(); //TODO
     };
 
     const handleLandingPage = () => {
         // Clear input and navigate to the landing page
         setChapterID("");
         setChapterTitle("");
-        onGoLandingPage();
+        //onGoLandingPage(); //TODO
     };
 
-    const handleAddSection = () => {
-        if (chapterID && chapterTitle) {
-            navigate("/create/section", { state: { chapterID: chapterID } })
+    const handleAddSection = (isModifySectionEnabled) => {
+        if (chapterID) {
+            navigate("/create/section", { state: { chapterID: chapterID, textbookId: textbookId, isModifySectionEnabled: isModifySectionEnabled } })
         } else {
             alert("Please fill in all fields before proceeding.");
         }
@@ -61,7 +63,7 @@ function AddNewChapter({ onGoBack, onGoLandingPage, onAddSection }) {
 
     return (
         <div>
-            <h3>Add New Chapter</h3>
+            <h3>{isModifyEnabled ? <>Modify</> : <>Add New</>} Chapter</h3>
 
             {!textbookId ? (<label>
                 Textbook ID:
@@ -81,19 +83,21 @@ function AddNewChapter({ onGoBack, onGoLandingPage, onAddSection }) {
                 />
             </label>
             <br />
-            <label>
+            {!isModifyEnabled ? <label>
                 Chapter Title:
                 <input
                     type="text"
                     value={chapterTitle}
                     onChange={(e) => setChapterTitle(e.target.value)}
                 />
-            </label>
-            <button onClick={handleCreateChapter}>Create Chapter</button>
+            </label> : null}
+            {!isModifyEnabled ? <button onClick={handleCreateChapter}>Create Chapter</button> : null}
             <br />
-            {showNextOptions ? <><button onClick={handleAddSection}>1. Add New Section</button>
-                <button onClick={handleDiscard}>2. Go Back</button>
-                <button onClick={handleLandingPage}>3. Landing Page</button></> : null}
+            {showNextOptions || isModifyEnabled ?
+                <><button onClick={() => handleAddSection(false)}>Add New Section</button>
+                    {isModifyEnabled ? <button onClick={() => handleAddSection(isModifyEnabled)}>Modify New Section</button> : <></>}
+                    <button onClick={handleDiscard}>Go Back</button>
+                    <button onClick={handleLandingPage}>Landing Page</button></> : null}
         </div>
     );
 }

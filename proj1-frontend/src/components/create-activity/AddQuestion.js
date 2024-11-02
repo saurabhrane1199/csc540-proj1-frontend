@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
     const [questionDetails, setQuestionDetails] = useState({
@@ -12,6 +13,9 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
         ]
     });
     const [menuChoice, setMenuChoice] = useState(null);
+    const location = useLocation();
+    const [activityId, setActivityId] = useState(location.state?.activityId || null)
+
 
     const handleOptionChange = (index, field, value) => {
         const updatedOptions = [...questionDetails.options];
@@ -22,7 +26,38 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
     const handleSave = (e) => {
         e.preventDefault();
         if (menuChoice === 1) {
-            onSave(questionDetails);
+            fetch(`${process.env.REACT_APP_SERVER_URL}/questions/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    "activity_id": activityId,
+                    "question_id": questionDetails.questionId,
+                    "question_text": questionDetails.questionText,
+                    "option_1_text": questionDetails.options[0].text,
+                    "option_1_explanation": questionDetails.options[0].explanation,
+                    "option_1_label": questionDetails.options[0].label === 'Correct',
+                    "option_2_text": questionDetails.options[1].text,
+                    "option_2_explanation": questionDetails.options[1].explanation,
+                    "option_2_label": questionDetails.options[1].label === 'Correct',
+                    "option_3_text": questionDetails.options[2].text,
+                    "option_3_explanation": questionDetails.options[2].explanation,
+                    "option_3_label": questionDetails.options[2].label === 'Correct',
+                    "option_4_text": questionDetails.options[3].text,
+                    "option_4_explanation": questionDetails.options[3].explanation,
+                    "option_4_label": questionDetails.options[3].label === 'Correct',
+
+                }),
+
+            })
+                .then((response) => {
+                    console.log(response)
+                    alert("Question created")
+                })
+                .catch((error) => console.error(error));
+
         } else if (menuChoice === 2) {
             onCancel();
         } else if (menuChoice === 3) {
@@ -110,3 +145,5 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
         </div>
     );
 };
+
+export default AddQuestionForm

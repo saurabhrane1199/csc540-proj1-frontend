@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { csrftoken } from "../../csrftoken";
 
-function AddNewSection({ onGoBack, onGoLandingPage, onAddContentBlock }) {
+function AddNewSection() {
     const [sectionNumber, setSectionNumber] = useState("");
     const [sectionTitle, setSectionTitle] = useState("");
+    const [sectionId, setSectionId] = useState("1.1");
     const [showNextOptions, setshowNextOptions] = useState(false)
     const navigate = useNavigate();
 
     const location = useLocation();
 
     const [chapterID, setChapterID] = useState(location.state?.chapterID || null)
+    const [textbookId, setTextbookId] = useState(location.state?.textbookId || null)
+    const [isModifyEnabled, setIsModifyEnabled] = useState(location.state?.isModifySectionEnabled || null)
 
     const handleCreateSection = () => {
 
@@ -25,16 +28,21 @@ function AddNewSection({ onGoBack, onGoLandingPage, onAddContentBlock }) {
 
                 "chapter_id": chapterID,
                 "number": sectionNumber,      //provided by user
-                "title": "Sorting", //provided by user
-                "section_id": 1.1, //TODO
-                "hidden": false   //default: False
+                "title": sectionTitle, //provided by user
+                "hidden": false,   //default: False
+                "textbook_id": textbookId
 
             }),
 
         })
             .then((response) => {
-                console.log(response)
+                const data = response.json()
+                return data
+            })
+            .then((data) => {
+                console.log(data)
                 alert("Section created")
+                setSectionId(data.section_id)
                 setshowNextOptions(true)
             })
             .catch((error) => console.error(error));
@@ -45,19 +53,19 @@ function AddNewSection({ onGoBack, onGoLandingPage, onAddContentBlock }) {
         // Clear the input fields and go back to the previous page
         setSectionNumber("");
         setSectionTitle("");
-        onGoBack();
+        navigate(-1)
     };
 
     const handleLandingPage = () => {
         // Clear input and navigate to the landing page
         setSectionNumber("");
         setSectionTitle("");
-        onGoLandingPage();
+        navigate(-1)
     };
 
-    const handleAddContentBlock = () => {
+    const handleAddContentBlock = (isModifyEnabled) => {
         if (sectionNumber && sectionTitle) {
-            onAddContentBlock({ sectionNumber, sectionTitle }); // Redirect to Add New Content Block page
+            navigate("/create/content", { state: { sectionId: sectionId, isModifyEnabled: isModifyEnabled } })
         } else {
             alert("Please fill in all fields before proceeding.");
         }
@@ -65,7 +73,16 @@ function AddNewSection({ onGoBack, onGoLandingPage, onAddContentBlock }) {
 
     return (
         <div>
-            <h3>Add New Section</h3>
+            <h3>{isModifyEnabled ? <>Modify</> : <>Add New</>}Section</h3>
+
+            {!textbookId ? (<label>
+                Textbook ID:
+                <input
+                    type="text"
+                    value={textbookId}
+                    onChange={(e) => setTextbookId(e.target.value)}
+                />
+            </label>) : null}
 
             {!chapterID ? (<label>
                 Chapter ID:
@@ -86,20 +103,21 @@ function AddNewSection({ onGoBack, onGoLandingPage, onAddContentBlock }) {
                 />
             </label>
             <br />
-            <label>
+            {!isModifyEnabled ? <label>
                 Section Title:
                 <input
                     type="text"
                     value={sectionTitle}
                     onChange={(e) => setSectionTitle(e.target.value)}
                 />
-            </label>
+            </label> : <></>}
             <button onClick={handleCreateSection}>Create Section</button>
             <br />
-            {showNextOptions ?
-                <><button onClick={handleAddContentBlock}>1. Add New Content Block</button>
-                    <button onClick={handleDiscard}>2. Go Back</button>
-                    <button onClick={handleLandingPage}>3. Landing Page</button></> : null}
+            {showNextOptions || isModifyEnabled ?
+                <><button onClick={() => handleAddContentBlock(false)}>Add New Content Block</button>
+                    {isModifyEnabled ? <button onClick={() => handleAddContentBlock(isModifyEnabled)}>Modify Content Block</button> : <></>}
+                    <button onClick={handleDiscard}>Go Back</button>
+                    <button onClick={handleLandingPage}>Landing Page</button></> : null}
         </div>
     );
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import './AdminLandingPage.css'
 import CreateFacultyAccount from '../create-accounts/CreateFacultyAccount';
 import CreateETextbook from '../create-textbook/CreateETextbook';
+import CreateCourseForm from '../create-course/CreateCourseForm';
+import CreateEvaluationCourseForm from '../create-course/CreateEvaluationCourseForm';
 import { useState } from 'react';
 
 function AdminLandingPage() {
@@ -11,7 +13,7 @@ function AdminLandingPage() {
         setSelectedPage(null);
     };
 
-    
+
 
     const renderPage = () => {
         switch (selectedPage) {
@@ -19,12 +21,12 @@ function AdminLandingPage() {
                 return <CreateFacultyAccount onGoBack={handleGoBack} />;
             case "2":
                 return <CreateETextbook onGoBack={handleGoBack} />;
-            // case "3":
-            //     return <ModifyETextbooks />;
-            // case "4":
-            //     return <ActiveCourse />;
-            // case "5":
-            //     return <EvaluationCourse />;
+            case "3":
+                return <CreateETextbook onGoBack={handleGoBack} isModifyEnabled={true} />
+            case "4":
+                return <CreateCourseForm onGoBack={handleGoBack} />;
+            case "5":
+                return <CreateEvaluationCourseForm onGoBack={handleGoBack} />;
             case "6":
                 return <div>Logging out... Returning to Home page.</div>;
             default:

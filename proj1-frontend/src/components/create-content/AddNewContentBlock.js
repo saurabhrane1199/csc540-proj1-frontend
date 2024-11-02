@@ -1,39 +1,79 @@
 import React, { useState } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { csrftoken } from "../../csrftoken";
 
-function AddNewContentBlock({ onGoBack, onGoLandingPage, onAddText, onAddPicture, onAddActivity }) {
+function AddNewContentBlock() {
     const [contentBlockID, setContentBlockID] = useState("");
+    const [contentBlockCreated, setContentBlockCreated] = useState(false)
+
+    const location = useLocation();
+    const [sectionId, setSectionId] = useState(location.state?.sectionId || null);
+    const [isModifiedEnabled, setIsModifiedEnabled] = useState(location.state?.isModifyEnabled || null);
+
+    const navigate = useNavigate();
+
+
 
     const handleDiscard = () => {
         // Clear the input field and go back to the previous page
         setContentBlockID("");
-        onGoBack();
+        //onGoBack();
     };
 
     const handleLandingPage = () => {
         // Clear input and navigate to the landing page
         setContentBlockID("");
-        onGoLandingPage();
+        //onGoLandingPage();
     };
 
-    const handleAddText = () => {
+    const createContentBlock = () => {
+        if (!contentBlockCreated || !isModifiedEnabled) {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/contents/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,  // CSRF token from the cookie
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    "content_id": contentBlockID, //provided by user (unique)
+                    "section_id": sectionId,
+                    "hidden": "False"
+                }),
+
+            })
+                .then((response) => {
+                    console.log(response)
+                    alert("Content Block created")
+                    setContentBlockCreated(true)
+                })
+                .catch((error) => console.error(error));
+        }
+
+    }
+
+    const handleAddText = async () => {
         if (contentBlockID) {
-            onAddText(contentBlockID); // Redirect to Add Text page
+            await createContentBlock()
+            navigate("/create/content/text", { state: { sectionId: sectionId, contentBlockID: contentBlockID } })
         } else {
             alert("Please enter the Content Block ID before proceeding.");
         }
     };
 
-    const handleAddPicture = () => {
+    const handleAddPicture = async () => {
         if (contentBlockID) {
-            onAddPicture(contentBlockID); // Redirect to Add Picture page
+            await createContentBlock()
+            navigate("/create/content/image", { state: { sectionId: sectionId, contentBlockID: contentBlockID } })
         } else {
             alert("Please enter the Content Block ID before proceeding.");
         }
     };
 
-    const handleAddActivity = () => {
+    const handleAddActivity = async () => {
         if (contentBlockID) {
-            onAddActivity(contentBlockID); // Redirect to Add Activity page
+            await createContentBlock()
+            navigate("/create/content/activity", { state: { sectionId: sectionId, contentBlockID: contentBlockID } })
         } else {
             alert("Please enter the Content Block ID before proceeding.");
         }

@@ -1,27 +1,55 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { csrftoken } from "../../csrftoken";
+import { useNavigate } from "react-router-dom";
 
-function AddText({ onGoBack, onGoLandingPage, onSaveText }) {
+
+function AddText() {
     const [text, setText] = useState("");
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const [contentBlockID, setETextbookID] = useState(location.state?.contentBlockID || null) //TODO
 
     const handleDiscardAndGoBack = () => {
         // Clear input and go back to the previous page
         setText("");
-        onGoBack();
+        navigate(-1);
     };
 
     const handleDiscardAndGoLandingPage = () => {
         // Clear input and go to the landing page
         setText("");
-        onGoLandingPage();
+        navigate(-1);
     };
 
     const handleSaveText = () => {
         if (text) {
-            onSaveText(text); // Save the text and go back to the previous page
-        } else {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/contents/${contentBlockID}/text/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,  // CSRF token from the cookie
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    "text_data": text
+                }),
+
+            })
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch((error) => console.error(error));
+        }
+        else {
             alert("Please enter some text before saving.");
         }
     };
+
+
+
 
     return (
         <div>

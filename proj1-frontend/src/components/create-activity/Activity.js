@@ -1,18 +1,59 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ActivityForm = ({ onAddQuestion, onGoBack, onLandingPage }) => {
+
+const ActivityForm = () => {
+
     const [activityId, setActivityId] = useState('');
     const [menuChoice, setMenuChoice] = useState(null);
+    const [contentBlockID, setcontentID] = useState("Block01") //TODO
+
+    const navigate = useNavigate();
+
+    const handleAddQuestion = () => {
+        navigate("/create/content/activity/question", { state: { activityId: activityId } })
+    };
+
+    const handleGoBack = () => {
+        console.log('Going back to the previous page...');
+        navigate(-1)
+    };
+
+    const handleLandingPage = () => {
+        console.log('Redirecting to Landing Page...');
+        navigate(-1)
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        fetch(`${process.env.REACT_APP_SERVER_URL}/activities/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                "activity_id": activityId,
+                " ": contentBlockID
+            }),
+
+        })
+            .then((response) => {
+                console.log(response)
+                alert("Textbook created")
+            })
+            .catch((error) => console.error(error));
+
+
+
         if (menuChoice === 1) {
-            onAddQuestion();
+            handleAddQuestion();
         } else if (menuChoice === 2) {
-            onGoBack();
+            handleGoBack();
         } else if (menuChoice === 3) {
-            onLandingPage();
+            handleLandingPage();
         }
     };
 
@@ -53,29 +94,6 @@ const ActivityForm = ({ onAddQuestion, onGoBack, onLandingPage }) => {
     );
 };
 
-const App = () => {
-    const handleAddQuestion = () => {
-        console.log('Redirecting to Add Question page...');
-        // Implement Add Question page navigation
-    };
 
-    const handleGoBack = () => {
-        console.log('Going back to the previous page...');
-        // Implement Go Back functionality
-    };
 
-    const handleLandingPage = () => {
-        console.log('Redirecting to Landing Page...');
-        // Implement Landing Page navigation
-    };
-
-    return (
-        <ActivityForm
-            onAddQuestion={handleAddQuestion}
-            onGoBack={handleGoBack}
-            onLandingPage={handleLandingPage}
-        />
-    );
-};
-
-export default App;
+export default ActivityForm;

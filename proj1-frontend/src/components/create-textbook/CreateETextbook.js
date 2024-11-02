@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { csrftoken } from "../../csrftoken";
 import { useNavigate } from 'react-router-dom';
+import './CreateETextbook.css'
 
-function CreateETextbook({ onGoBack, onAddChapter }) {
+function CreateETextbook({ onGoBack, isModifyEnabled }) {
   const [title, setTitle] = useState("");
   const [eTextbookID, setETextbookID] = useState("");
   const [showNextOption, setShowNextOption] = useState(false)
@@ -16,10 +17,10 @@ function CreateETextbook({ onGoBack, onAddChapter }) {
     onGoBack(); // Go back to Admin Landing Page
   };
 
-  const handleAddChapter = () => {
-    if (title && eTextbookID) {
+  const handleAddChapter = (isModifyChapter) => {
+    if (eTextbookID) {
       ; // Redirect to Add New Chapter page //TODO
-      navigate("/create/chapter", { state: { textbookId: eTextbookID } })
+      navigate("/create/chapter", { state: { textbookId: eTextbookID, isModifyChapter: isModifyChapter } })
     } else {
       alert("Please fill in all fields before proceeding.");
     }
@@ -30,7 +31,6 @@ function CreateETextbook({ onGoBack, onAddChapter }) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': csrftoken,  // CSRF token from the cookie
       },
       credentials: 'include',
       body: JSON.stringify({
@@ -49,15 +49,15 @@ function CreateETextbook({ onGoBack, onAddChapter }) {
 
   return (
     <div>
-      <h3>Create E-textbook</h3>
-      <label>
+      <h3>{!isModifyEnabled ? <span>Create</span> : <span>Modify</span>} E-textbook</h3>
+      {!isModifyEnabled ? <label>
         Title:
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-      </label>
+      </label> : null}
       <br />
       <label>
         Unique E-textbook ID:
@@ -67,10 +67,13 @@ function CreateETextbook({ onGoBack, onAddChapter }) {
           onChange={(e) => setETextbookID(e.target.value)}
         />
       </label>
-      <button onClick={handleOnSubmit}>Create</button>
+      {!isModifyEnabled ? <button onClick={handleOnSubmit}>Create</button> : null}
       <br />
-      {showNextOption ? <><button onClick={handleAddChapter}>1. Add New Chapter</button>
-        <button onClick={handleDiscard}>2. Go Back</button></> : null}
+      {showNextOption || isModifyEnabled ? <>
+        <button onClick={() => handleAddChapter(false)}>Add New Chapter</button>
+        {isModifyEnabled ? < button onClick={() => handleAddChapter(isModifyEnabled)}>Modify New Chapter</button> : null}
+        <button onClick={handleDiscard}>Go Back</button></> : null
+      }
     </div >
   );
 }
