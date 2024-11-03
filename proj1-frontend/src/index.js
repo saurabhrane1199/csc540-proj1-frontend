@@ -25,6 +25,15 @@ import AddTAPage from './components/faculty/AddTAPage';
 import ViewStudentsPage from './components/faculty/ViewStudentsPage';
 import ApproveEnrollmentPage from './components/faculty/ApproveEnrollmentPage';
 import ViewWorklistPage from './components/faculty/ViewWorklistPage';
+import EvaluationCoursePage from './components/faculty/active-course/EvaluationCoursePage';
+import HideChapter from './components/create-chapters/HideChapter';
+import DeleteChapter from './components/create-chapters/DeleteChapter';
+import HideSection from './components/create-section/HideSection';
+import DeleteSection from './components/create-section/DeleteSection';
+import HideActivity from './components/create-activity/HideActivity';
+import DeleteActivity from './components/create-activity/DeleteActivity';
+import HideContentBlock from './components/create-content/HideContentBlock';
+import DeleteContentBlock from './components/create-content/DeleteContentBlock';
 
 
 
@@ -47,8 +56,17 @@ root.render(
         <Route path="/create/content/activity" element={<ActivityForm />}></Route>
         <Route path="/create/content/activity/question" element={<AddQuestionForm />}></Route>
         <Route path="/create/content/text" element={<AddText />}></Route>
+        <Route path="/hide/chapter" element={<HideChapter />}></Route>
+        <Route path="/delete/chapter" element={<DeleteChapter />}></Route>
+        <Route path="/hide/section" element={<HideSection />}></Route>
+        <Route path="/delete/section" element={<DeleteSection />}></Route>
+        <Route path="/hide/activity" element={<HideActivity />}></Route>
+        <Route path="/delete/activity" element={<DeleteActivity />}></Route>
+        <Route path="/hide/content" element={<HideContentBlock />}></Route>
+        <Route path="/delete/content" element={<DeleteContentBlock />}></Route>
         <Route path="/faculty" element={<FacultyLandingPage />}></Route>
         <Route path="/faculty/active/course" element={<ActiveCoursePage />}></Route>
+        <Route path="/faculty/evaluation/course" element={<EvaluationCoursePage />}></Route>
         <Route path="/faculty/courses" element={<ViewCoursesPage />}></Route>
         <Route path="/faculty/worklist" element={<ViewWorklistPage />}></Route >
         <Route path="/faculty/approve-enrollment" element={<ApproveEnrollmentPage />}></Route >
@@ -57,6 +75,7 @@ root.render(
         <Route path="/ta" element={<TALandingPage />}></Route>
         <Route path="/student" element={<StudentLandingPage />}></Route>
         <Route path="/change-password" element={<ChangePasswordPage />}></Route>
+
       </Routes>
     </Router>
   </React.StrictMode>

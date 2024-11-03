@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { csrftoken } from "../../csrftoken";
 
@@ -7,9 +7,14 @@ function AddNewSection() {
     const [sectionTitle, setSectionTitle] = useState("");
     const [sectionId, setSectionId] = useState("1.1");
     const [showNextOptions, setshowNextOptions] = useState(false)
+    const [role, setRole] = useState()
     const navigate = useNavigate();
 
     const location = useLocation();
+
+    useEffect(() => {
+        setRole(localStorage.getItem('role'))
+    })
 
     const [chapterID, setChapterID] = useState(location.state?.chapterID || null)
     const [textbookId, setTextbookId] = useState(location.state?.textbookId || null)
@@ -26,7 +31,7 @@ function AddNewSection() {
             credentials: 'include',
             body: JSON.stringify({
 
-                "chapter_id": chapterID,
+                "chapter_name": chapterID,
                 "number": sectionNumber,      //provided by user
                 "title": sectionTitle, //provided by user
                 "hidden": false,   //default: False
@@ -64,8 +69,8 @@ function AddNewSection() {
     };
 
     const handleAddContentBlock = (isModifyEnabled) => {
-        if (sectionNumber && sectionTitle) {
-            navigate("/create/content", { state: { sectionId: sectionId, isModifyEnabled: isModifyEnabled } })
+        if (sectionNumber) {
+            navigate("/create/content", { state: { textbookId: textbookId, sectionNumber: sectionNumber, chapterID: chapterID, isModifyEnabled: isModifyEnabled } })
         } else {
             alert("Please fill in all fields before proceeding.");
         }
@@ -111,11 +116,13 @@ function AddNewSection() {
                     onChange={(e) => setSectionTitle(e.target.value)}
                 />
             </label> : <></>}
-            <button onClick={handleCreateSection}>Create Section</button>
+            {!isModifyEnabled ? <button onClick={handleCreateSection}>Create Section</button> : <></>}
             <br />
             {showNextOptions || isModifyEnabled ?
                 <><button onClick={() => handleAddContentBlock(false)}>Add New Content Block</button>
                     {isModifyEnabled ? <button onClick={() => handleAddContentBlock(isModifyEnabled)}>Modify Content Block</button> : <></>}
+                    {isModifyEnabled && role === "faculty" ? <button onClick={() => { navigate("/hide/section", { state: { textbookId: textbookId, chapterName: chapterID } }) }}>Hide Section</button> : <></>}
+                    {isModifyEnabled && role === "faculty" ? <button onClick={() => { navigate("/delete/section", { state: { textbookId: textbookId, chapterName: chapterID } }) }}>Delete Section</button> : <></>}
                     <button onClick={handleDiscard}>Go Back</button>
                     <button onClick={handleLandingPage}>Landing Page</button></> : null}
         </div>

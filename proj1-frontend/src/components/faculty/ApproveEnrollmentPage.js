@@ -15,7 +15,7 @@ const ApproveEnrollmentPage = () => {
     // Function to handle the "Save" option
     const handleSave = () => {
         if (studentID) {
-            fetch(`${process.env.REACT_APP_SERVER_URL}courses/${studentID}}/enroll/`, {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/courses/${studentID}/enroll/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

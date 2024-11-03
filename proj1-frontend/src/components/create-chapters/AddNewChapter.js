@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { csrftoken } from "../../csrftoken";
+import userRole from "../../getRoleFromStorage";
 
 function AddNewChapter() {
     const [chapterID, setChapterID] = useState("");
     const [chapterTitle, setChapterTitle] = useState("");
     const [showNextOptions, setshowNextOptions] = useState(false)
+    const [role, setRole] = useState()
+
+    useEffect(() => {
+        setRole(localStorage.getItem('role'))
+    })
 
 
     const navigate = useNavigate();
@@ -14,6 +20,7 @@ function AddNewChapter() {
 
     const [isModifyEnabled, setModifyEnabled] = useState(location.state?.isModifyChapter || null)
     const [textbookId, setETextbookID] = useState(location.state?.textbookId || null)
+    const isTextbookNull = textbookId === null ? true : false
 
     const handleCreateChapter = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/chapters/`, {
@@ -26,7 +33,7 @@ function AddNewChapter() {
             body: JSON.stringify({
                 "textbook_id": textbookId,
                 "title": chapterTitle,
-                "chapter_id": chapterID,
+                "chapter_name": chapterID,
                 "hidden": false
             }),
 
@@ -43,6 +50,7 @@ function AddNewChapter() {
         // Clear the input fields and go back to the previous page
         setChapterID("");
         setChapterTitle("");
+        navigate(-1)
         //onGoBack(); //TODO
     };
 
@@ -50,6 +58,7 @@ function AddNewChapter() {
         // Clear input and navigate to the landing page
         setChapterID("");
         setChapterTitle("");
+        navigate(-1)
         //onGoLandingPage(); //TODO
     };
 
@@ -65,7 +74,7 @@ function AddNewChapter() {
         <div>
             <h3>{isModifyEnabled ? <>Modify</> : <>Add New</>} Chapter</h3>
 
-            {!textbookId ? (<label>
+            {isTextbookNull ? (<label>
                 Textbook ID:
                 <input
                     type="text"
@@ -95,7 +104,9 @@ function AddNewChapter() {
             <br />
             {showNextOptions || isModifyEnabled ?
                 <><button onClick={() => handleAddSection(false)}>Add New Section</button>
-                    {isModifyEnabled ? <button onClick={() => handleAddSection(isModifyEnabled)}>Modify New Section</button> : <></>}
+                    {isModifyEnabled ? <button onClick={() => handleAddSection(isModifyEnabled)}>Modify Section</button> : <></>}
+                    {isModifyEnabled & role === "faculty" ? <button onClick={() => { navigate("/hide/chapter", { state: { textbookId: textbookId } }) }}>Hide Chapter</button> : <></>}
+                    {isModifyEnabled & role === "faculty" ? <button onClick={() => { navigate("/delete/chapter", { state: { textbookId: textbookId } }) }}>Delete Chapter</button> : <></>}
                     <button onClick={handleDiscard}>Go Back</button>
                     <button onClick={handleLandingPage}>Landing Page</button></> : null}
         </div>

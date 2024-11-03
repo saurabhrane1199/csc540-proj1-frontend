@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const ActivityForm = () => {
 
     const [activityId, setActivityId] = useState('');
     const [menuChoice, setMenuChoice] = useState(null);
-    const [contentBlockID, setcontentID] = useState("Block01") //TODO
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const [chapterID, setChapterID] = useState(location.state?.chapterID || null)
+    const [textbookId, setTextbookId] = useState(location.state?.textbookId || null)
+    const [contentBlockID, setContentBlockID] = useState(location.state?.contentBlockID || null);
+    const [sectionNumber, setSectionNumber] = useState(location.state?.sectionNumber || null);
+
 
     const handleAddQuestion = () => {
-        navigate("/create/content/activity/question", { state: { activityId: activityId } })
+        navigate("/create/content/activity/question", { state: { chapterID: chapterID, textbookId: textbookId, sectionNumber: sectionNumber, contentBlockID: contentBlockID, activityId: activityId } })
     };
 
     const handleGoBack = () => {
@@ -35,8 +41,12 @@ const ActivityForm = () => {
             },
             credentials: 'include',
             body: JSON.stringify({
-                "activity_id": activityId,
-                " ": contentBlockID
+                "activity_number": activityId,
+                "content_name": contentBlockID,
+                "section_number": sectionNumber,
+                "chapter_name": chapterID,
+                "textbook_id": textbookId,
+                "hidden": false
             }),
 
         })

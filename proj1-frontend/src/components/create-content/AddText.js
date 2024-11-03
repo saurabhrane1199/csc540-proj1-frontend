@@ -9,8 +9,10 @@ function AddText() {
 
     const location = useLocation();
     const navigate = useNavigate();
-
-    const [contentBlockID, setETextbookID] = useState(location.state?.contentBlockID || null) //TODO
+    const [chapterID, setChapterID] = useState(location.state?.chapterID || null)
+    const [textbookId, setTextbookId] = useState(location.state?.textbookId || null)
+    const [contentBlockID, setContentBlockID] = useState(location.state?.contentBlockID || null);
+    const [sectionNumber, setSectionNumber] = useState(location.state?.sectionNumber || null);
 
     const handleDiscardAndGoBack = () => {
         // Clear input and go back to the previous page
@@ -34,7 +36,11 @@ function AddText() {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    "text_data": text
+                    "text_data": text,
+                    "section_number": sectionNumber,
+                    "chapter_name": chapterID,
+                    "textbook_id": textbookId,
+                    "hidden": false
                 }),
 
             })

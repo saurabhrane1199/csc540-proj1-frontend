@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AddPicture() {
     const [picture, setPicture] = useState(null);
-    const [contentID, setcontentID] = useState("Block01"); //TODO
     const navigate = useNavigate()
+    const location = useLocation()
+
+
+    const [chapterID, setChapterID] = useState(location.state?.chapterID || null)
+    const [textbookId, setTextbookId] = useState(location.state?.textbookId || null)
+    const [contentBlockID, setContentBlockID] = useState(location.state?.contentBlockID || null);
+    const [sectionNumber, setSectionNumber] = useState(location.state?.sectionNumber || null);
 
     const handlePictureChange = (e) => {
         setPicture(e.target.files[0]);
@@ -26,6 +32,9 @@ function AddPicture() {
         if (picture) {
             const formdata = new FormData();
             formdata.append("image_data", picture);
+            formdata.append("section_number", sectionNumber);
+            formdata.append("chapter_name", chapterID);
+            formdata.append("textbook_id", textbookId);
 
             const requestOptions = {
                 method: "POST",
@@ -35,7 +44,7 @@ function AddPicture() {
             };
 
             // Make the fetch call
-            fetch(`${process.env.REACT_APP_SERVER_URL}/contents/${contentID}/image/`, requestOptions)
+            fetch(`${process.env.REACT_APP_SERVER_URL}/contents/${contentBlockID}/image/`, requestOptions)
                 .then((response) => response.text())
                 .then((result) => {
                     console.log(result);

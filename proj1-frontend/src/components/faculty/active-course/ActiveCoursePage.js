@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import userRole from '../../../getRoleFromStorage';
 
 const ActiveCoursePage = () => {
     const navigate = useNavigate();
     const [courseID, setCourseID] = useState('');
+
+    const location = useLocation();
+
+    const [role, setRole] = useState(location.state?.role || '')
+
+    useEffect(() => {
+        if (role === '') {
+            setRole(localStorage.getItem('role'))
+        }
+    });
 
     // Function to handle the Course ID input
     const handleCourseIDChange = (e) => {
@@ -32,7 +43,7 @@ const ActiveCoursePage = () => {
                 navigate(`/faculty/add-ta`, { state: { courseID: courseID } });
                 break;
             case 7:
-                navigate('/faculty'); // Go back to Faculty Landing page
+                navigate(`/${role}`); // Go back to Faculty Landing page
                 break;
             default:
                 break;
@@ -52,12 +63,12 @@ const ActiveCoursePage = () => {
 
             <h2>Menu</h2>
             <ol>
-                <li onClick={() => handleOptionSelect(1)}>View Worklist</li>
-                <li onClick={() => handleOptionSelect(2)}>Approve Enrollment</li>
+                {role === "faculty" ? <><li onClick={() => handleOptionSelect(1)}>View Worklist</li>
+                    <li onClick={() => handleOptionSelect(2)}>Approve Enrollment</li></> : <></>}
                 <li onClick={() => handleOptionSelect(3)}>View Students</li>
                 <li onClick={() => handleOptionSelect(4)}>Add New Chapter</li>
                 <li onClick={() => handleOptionSelect(5)}>Modify Chapters</li>
-                <li onClick={() => handleOptionSelect(6)}>Add TA</li>
+                {role === "faculty" ? <li onClick={() => handleOptionSelect(6)}>Add TA</li> : <></>}
                 <li onClick={() => handleOptionSelect(7)}>Go Back</li>
             </ol>
         </div>

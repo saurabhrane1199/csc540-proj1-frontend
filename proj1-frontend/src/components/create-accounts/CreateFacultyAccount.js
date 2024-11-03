@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import apiUrl from "../../env";
 
 function CreateFacultyAccount({ onGoBack }) {
     const [firstName, setFirstName] = useState("");
@@ -8,12 +9,13 @@ function CreateFacultyAccount({ onGoBack }) {
 
     const handleSubmit = async () => {
         // Mock API call to save the faculty account
-        const newFaculty = { firstName, lastName, email, password };
+        const newFaculty = { first_name: firstName, last_name: lastName, email: email, password: password };
         try {
-            const response = await fetch("/api/faculty", { //TODO
+            const response = await fetch(`${apiUrl}/createfaculty/`, { //TODO
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newFaculty),
+                credentials: 'include'
             });
             if (response.ok) {
                 alert("Faculty account created successfully!");

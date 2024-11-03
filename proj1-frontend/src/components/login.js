@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import apiUrl from '../env';
 import { csrftoken } from './../csrftoken';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function Login() {
   const [username, setusername] = useState('');
@@ -15,10 +16,6 @@ function Login() {
     navigate('/')
   }
 
-
-
-
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === 'username') {
@@ -30,7 +27,7 @@ function Login() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${apiUrl}/login/`, {
+      fetch(`${apiUrl}/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,23 +35,27 @@ function Login() {
         },
         credentials: 'include',
         body: JSON.stringify({
-          "username": username,
+          "user_id": username,
           "password": password,
         }),
-      });
+      })
+        .then((result) => {
+          return result.json()
+        })
+        .then((data) => {
+          if (data.message === 'success') {
+            setMessage(`Welcome ${userType}!`);
+            navigate('/admin')
+          } else {
+            setMessage('Login Incorrect. Please try again.');
+          }
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      const data = await response.json();
-      console.log(data);
-      if (data.message === 'success') {
-        setMessage(`Welcome ${userType}!`);
-        navigate('/admin')
-      } else {
-        setMessage('Login Incorrect. Please try again.');
-      }
+          const cookieValue = Cookies.get('role');
+          if (cookieValue) {
+            localStorage.setItem('role', cookieValue);
+          }
+          navigate(`/${cookieValue}`)
+        });
     } catch (error) {
       console.error('Error:', error);
       setMessage('An error occurred. Please try again later.');

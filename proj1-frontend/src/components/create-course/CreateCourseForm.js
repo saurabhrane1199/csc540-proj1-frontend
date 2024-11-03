@@ -45,7 +45,7 @@ const CreateCourseForm = ({ onGoBack }) => {
                     "start_date": courseDetails.startDate,
                     "end_date": courseDetails.endDate,
                     "faculty_id": courseDetails.facultyMemberId,
-                    "textbook_id": courseDetails.textbook_id
+                    "textbook_id": courseDetails.eTextbookId
                 }),
             });
 

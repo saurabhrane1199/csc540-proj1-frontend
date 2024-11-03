@@ -11,7 +11,7 @@ const FacultyLandingPage = () => {
         navigate('/faculty/active/course');
         break;
       case 2:
-        navigate('/evaluation-course');
+        navigate('/faculty/evaluation/course');
         break;
       case 3:
         navigate('/faculty/courses');

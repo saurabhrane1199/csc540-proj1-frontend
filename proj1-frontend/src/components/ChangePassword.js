@@ -18,7 +18,7 @@ const ChangePasswordPage = () => {
             // savePassword(currentPassword, newPassword);
 
             setMessage('Success: Password updated successfully.');
-            setTimeout(() => navigate('/faculty-landing'), 2000); // Redirect after 2 seconds
+            setTimeout(() => navigate('/faculty'), 2000); // Redirect after 2 seconds
         } else {
             setMessage('Failure: Please fill in all fields.');
         }
@@ -26,7 +26,7 @@ const ChangePasswordPage = () => {
 
     // Function to handle the "Go Back" option
     const handleGoBack = () => {
-        navigate('/faculty-landing');
+        navigate(-1);
     };
 
     return (

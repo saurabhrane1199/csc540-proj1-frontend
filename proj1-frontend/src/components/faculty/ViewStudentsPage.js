@@ -1,13 +1,14 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { csrftoken } from '../../csrftoken';
 
 const ViewStudentsPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
     const [students, setStudents] = useState([])
-    const [courseId, setCourseId] = useState(location.state?.courseId || null)
+    const [courseId, setCourseId] = useState(location.state?.courseID || null)
 
     // const students = [
     //     { id: 'S001', name: 'John Doe', email: 'johndoe@example.com' },
@@ -19,9 +20,20 @@ const ViewStudentsPage = () => {
         // Define an async function to fetch data
         const fetchData = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/courses/${courseId}/worklist/`);
-                const result = await response.json();
-                setStudents(result);
+                fetch(`${process.env.REACT_APP_SERVER_URL}/courses/${courseId}/students/`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,  // CSRF token from the cookie
+                    },
+                    credentials: 'include',
+                })
+                    .then((result) => {
+                        return result.json();
+                    }).then((data) => {
+                        console.log(data)
+                        setStudents(data.enrolled_students);
+                    });
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -36,8 +48,8 @@ const ViewStudentsPage = () => {
             <h1>Students List</h1>
             <ul>
                 {students.map((student) => (
-                    <li key={student.id}>
-                        {student.name} ({student.email})
+                    <li key={student.student_id}>
+                        {student.student_id} ({student.student_name})
                     </li>
                 ))}
             </ul>

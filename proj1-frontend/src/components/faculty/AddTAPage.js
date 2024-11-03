@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import apiUrl from '../../env';
 import { csrftoken } from '../../csrftoken';
 
@@ -10,6 +10,10 @@ const AddTAPage = () => {
     const [faculty_id, setFacultyId] = useState(null)
     const [taInfo, setTaInfo] = useState({ firstName: '', lastName: '', email: '', password: '' });
     const [message, setMessage] = useState('');
+
+    const location = useLocation
+
+    const [courseId, setCourseId] = useState(location.state?.courseID || null)
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -27,13 +31,12 @@ const AddTAPage = () => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    //"user_id":
-                    "username": "James",
-                    "password": "Williams",
-                    "email": taInfo.email,
-                    "default_password": "jwilliams@1234",
-                    "course_id": "NCSUOganCSC440F24",
-                    "faculty_id": "KeOg1024"
+                    // "username": taInfo
+                    // "password": "Williams",
+                    // "email": taInfo.email,
+                    // "default_password": password,
+                    // "course_id": courseId,
+                    // "faculty_id": "KeOg1024"
                 }),
             });
 

@@ -36,11 +36,10 @@ const CreateEvaluationCourseForm = ({ onGoBack }) => {
                     "course_name": courseDetails.courseName,
                     "course_id": courseDetails.courseId,
                     "course_type": "evaluation",
-                    "course_capacity": courseDetails.capacity,
                     "start_date": courseDetails.startDate,
                     "end_date": courseDetails.endDate,
                     "faculty_id": courseDetails.facultyMemberId,
-                    "textbook_id": courseDetails.textbook_id
+                    "textbook_id": courseDetails.eTextbookId
                 }),
             });
         } else if (menuChoice === 2) {

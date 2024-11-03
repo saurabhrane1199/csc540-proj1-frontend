@@ -5,16 +5,22 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
     const [questionDetails, setQuestionDetails] = useState({
         questionId: '',
         questionText: '',
+        answer: '',
         options: [
-            { text: '', explanation: '', label: 'Incorrect' },
-            { text: '', explanation: '', label: 'Incorrect' },
-            { text: '', explanation: '', label: 'Incorrect' },
-            { text: '', explanation: '', label: 'Incorrect' }
+            { text: '', explanation: '' },
+            { text: '', explanation: '' },
+            { text: '', explanation: '' },
+            { text: '', explanation: '' }
         ]
     });
     const [menuChoice, setMenuChoice] = useState(null);
     const location = useLocation();
     const [activityId, setActivityId] = useState(location.state?.activityId || null)
+
+    const [chapterID, setChapterID] = useState(location.state?.chapterID || null)
+    const [textbookId, setTextbookId] = useState(location.state?.textbookId || null)
+    const [contentBlockID, setContentBlockID] = useState(location.state?.contentBlockID || null);
+    const [sectionNumber, setSectionNumber] = useState(location.state?.sectionNumber || null);
 
 
     const handleOptionChange = (index, field, value) => {
@@ -33,22 +39,22 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    "activity_id": activityId,
-                    "question_id": questionDetails.questionId,
+                    "textbook_id": textbookId,
+                    "chapter_name": chapterID,
+                    "section_number": sectionNumber,
+                    "content_name": contentBlockID,
+                    "activity_number": activityId,
+                    "question_name": questionDetails.questionId,
                     "question_text": questionDetails.questionText,
                     "option_1_text": questionDetails.options[0].text,
                     "option_1_explanation": questionDetails.options[0].explanation,
-                    "option_1_label": questionDetails.options[0].label === 'Correct',
                     "option_2_text": questionDetails.options[1].text,
                     "option_2_explanation": questionDetails.options[1].explanation,
-                    "option_2_label": questionDetails.options[1].label === 'Correct',
                     "option_3_text": questionDetails.options[2].text,
                     "option_3_explanation": questionDetails.options[2].explanation,
-                    "option_3_label": questionDetails.options[2].label === 'Correct',
                     "option_4_text": questionDetails.options[3].text,
                     "option_4_explanation": questionDetails.options[3].explanation,
-                    "option_4_label": questionDetails.options[3].label === 'Correct',
-
+                    "answer": 2,
                 }),
 
             })
@@ -110,18 +116,18 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
                                 required
                             />
                         </label>
-                        <label>
-                            Label:
-                            <select
-                                value={option.label}
-                                onChange={(e) => handleOptionChange(index, 'label', e.target.value)}
-                            >
-                                <option value="Correct">Correct</option>
-                                <option value="Incorrect">Incorrect</option>
-                            </select>
-                        </label>
                     </div>
+
                 ))}
+                <label>
+                    Correct Answer:
+                    <input
+                        type="text"
+                        value={questionDetails.answer}
+                        onChange={(e) => setQuestionDetails({ ...questionDetails, answer: e.target.value })}
+                        required
+                    />
+                </label>
 
                 <h3>Menu</h3>
                 <p>1. Save</p>
