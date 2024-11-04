@@ -24,7 +24,7 @@ const ViewCoursesPage = () => {
                         return result.json();
                     }).then((data) => {
                         console.log(data)
-                        setAssignedCourses(data.enrolled_students);
+                        setAssignedCourses(data);
                     });
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -44,18 +44,18 @@ const ViewCoursesPage = () => {
     return (
         <div>
             <h1>Assigned Courses</h1>
-            <ul>
+            <ol>
                 {assignedCourses?.map((course) => (
-                    <li key={course.id}>
-                        {course.id}: {course.name}
+                    <li key={course.course_id}>
+                        {course.course_id}: {course.course_name}
                     </li>
                 ))}
-            </ul>
+            </ol>
 
             <h2>Menu</h2>
-            <ol>
+            <ul>
                 <li onClick={handleGoBack}>Go Back</li>
-            </ol>
+            </ul>
         </div>
     );
 };

@@ -11,7 +11,7 @@ const AddTAPage = () => {
     const [taInfo, setTaInfo] = useState({ firstName: '', lastName: '', email: '', password: '' });
     const [message, setMessage] = useState('');
 
-    const location = useLocation
+    const location = useLocation()
 
     const [courseId, setCourseId] = useState(location.state?.courseID || null)
 
@@ -23,7 +23,7 @@ const AddTAPage = () => {
     const handleSave = async () => {
         if (taInfo.firstName && taInfo.lastName && taInfo.email && taInfo.password) {
 
-            const response = await fetch(`${apiUrl}/courses/`, {
+            const response = await fetch(`${apiUrl}/createta/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,12 +31,11 @@ const AddTAPage = () => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    // "username": taInfo
-                    // "password": "Williams",
-                    // "email": taInfo.email,
-                    // "default_password": password,
-                    // "course_id": courseId,
-                    // "faculty_id": "KeOg1024"
+                    "first_name": taInfo.firstName,
+                    "last_name": taInfo.lastName,
+                    "email": taInfo.email,
+                    "default_password": taInfo.password,
+                    "course_id": courseId,
                 }),
             });
 
