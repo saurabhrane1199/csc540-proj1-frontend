@@ -9,6 +9,8 @@ git clone https://github.com/saurabhrane1199/csc540-proj1-frontend.git
 
 cd proj1-frontend
 
+npm install
+
 npm start
 
 ```
