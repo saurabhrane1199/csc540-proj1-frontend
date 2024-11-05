@@ -34,6 +34,9 @@ import HideActivity from './components/create-activity/HideActivity';
 import DeleteActivity from './components/create-activity/DeleteActivity';
 import HideContentBlock from './components/create-content/HideContentBlock';
 import DeleteContentBlock from './components/create-content/DeleteContentBlock';
+import CourseEnrollmentPage from './components/student/EnrollmentPage';
+import StudentPreLogin from './components/student/StudentPreLogin';
+import LogOut from './components/logout';
 
 
 
@@ -46,6 +49,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/logout" element={<LogOut />}></Route>
         <Route path="/admin" element={<AdminLandingPage />}></Route>
         <Route path="/create/chapter" element={<AddNewChapter />}></Route>
         <Route path="/create/section" element={<AddNewSection />}></Route>
@@ -74,6 +78,8 @@ root.render(
         <Route path="/faculty/add-ta" element={<AddTAPage />}></Route >
         <Route path="/ta" element={<TALandingPage />}></Route>
         <Route path="/student" element={<StudentLandingPage />}></Route>
+        <Route path="/student/enroll" element={<CourseEnrollmentPage />}></Route>
+        <Route path="/student/prelogin" element={<StudentPreLogin />}></Route>
         <Route path="/change-password" element={<ChangePasswordPage />}></Route>
 
       </Routes>

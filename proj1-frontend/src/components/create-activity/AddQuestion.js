@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
+const AddQuestionForm = () => {
     const [questionDetails, setQuestionDetails] = useState({
         questionId: '',
         questionText: '',
@@ -13,8 +14,17 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
             { text: '', explanation: '' }
         ]
     });
+
+    const [role, setRole] = useState('')
+
+    useEffect(() => {
+        setRole(localStorage.getItem('role'))
+    })
+
+
     const [menuChoice, setMenuChoice] = useState(null);
     const location = useLocation();
+    const navigate = useNavigate();
     const [activityId, setActivityId] = useState(location.state?.activityId || null)
 
     const [chapterID, setChapterID] = useState(location.state?.chapterID || null)
@@ -65,9 +75,9 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
                 .catch((error) => console.error(error));
 
         } else if (menuChoice === 2) {
-            onCancel();
+            navigate(-1)
         } else if (menuChoice === 3) {
-            onLandingPage();
+            navigate(`/${role}`)
         }
     };
 
@@ -146,7 +156,7 @@ const AddQuestionForm = ({ onSave, onCancel, onLandingPage }) => {
                     />
                 </label>
 
-                <button type="submit">Submit</button>
+                <button onClick={handleSave}>Submit</button>
             </form>
         </div>
     );

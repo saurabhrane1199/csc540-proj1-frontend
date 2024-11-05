@@ -5,9 +5,12 @@ import CreateETextbook from '../create-textbook/CreateETextbook';
 import CreateCourseForm from '../create-course/CreateCourseForm';
 import CreateEvaluationCourseForm from '../create-course/CreateEvaluationCourseForm';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function AdminLandingPage() {
     const [selectedPage, setSelectedPage] = useState(null);
+
+    const navigate = useNavigate();
 
     const handleGoBack = () => {
         setSelectedPage(null);
@@ -28,7 +31,8 @@ function AdminLandingPage() {
             case "5":
                 return <CreateEvaluationCourseForm onGoBack={handleGoBack} />;
             case "6":
-                return <div>Logging out... Returning to Home page.</div>;
+                setTimeout(() => navigate("/logout"), 2000)
+
             default:
                 return <div>Select a menu option</div>;
         }

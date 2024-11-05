@@ -10,15 +10,18 @@ function App() {
     switch (choice) {
       case '1':
         setCurrentUserType('admin');
+        navigate('/login', { state: { currentUserType }, });
         break;
       case '2':
         setCurrentUserType('faculty');
+        navigate('/login', { state: { currentUserType }, });
         break;
       case '3':
         setCurrentUserType('ta');
+        navigate('/login', { state: { currentUserType }, });
         break;
       case '4':
-        setCurrentUserType('student');
+        navigate('/student/prelogin')
         break;
       case '5':
         alert('Exiting program...');
@@ -27,7 +30,7 @@ function App() {
         alert('Invalid choice. Please enter a number between 1 and 5.');
     }
 
-    navigate('/login', { state: { currentUserType }, });
+
 
   };
 

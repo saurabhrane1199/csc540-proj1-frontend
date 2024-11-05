@@ -18,7 +18,7 @@ function TALandingPage() {
                 navigate('/change-password');
                 break;
             case 4:
-                navigate('/ta'); // Redirect to Home page for Logout
+                navigate('/logout'); // Redirect to Home page for Logout
                 break;
             default:
                 break;
@@ -34,7 +34,7 @@ function TALandingPage() {
                 <li onClick={() => handleOptionSelect(1)}>Go to Active Course</li>
                 <li onClick={() => handleOptionSelect(2)}>View Courses</li>
                 <li onClick={() => handleOptionSelect(3)}>Change Password</li>
-                <li onClick={() => handleOptionSelect(5)}>Logout</li>
+                <li onClick={() => handleOptionSelect(4)}>Logout</li>
             </ol>
         </div>
     );

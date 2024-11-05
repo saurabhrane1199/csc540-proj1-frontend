@@ -10,7 +10,7 @@ function Login() {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-  const userType = location.state.currentUserType || '';
+  const userType = location.state?.currentUserType || '';
 
   const onGoBack = () => {
     navigate('/')

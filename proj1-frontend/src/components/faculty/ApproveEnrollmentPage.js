@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { csrftoken } from '../../csrftoken';
 
 const ApproveEnrollmentPage = () => {
     const navigate = useNavigate();
     const [studentID, setStudentID] = useState('');
     const [message, setMessage] = useState('');
+
+    const location = useLocation();
+
+    const [courseId, setCourseId] = useState(location.state?.courseID || null)
 
     // Function to handle the Student ID input
     const handleStudentIDChange = (e) => {
@@ -15,13 +19,16 @@ const ApproveEnrollmentPage = () => {
     // Function to handle the "Save" option
     const handleSave = () => {
         if (studentID) {
-            fetch(`${process.env.REACT_APP_SERVER_URL}/courses/${studentID}/enroll/`, {
-                method: 'POST',
+            fetch(`${process.env.REACT_APP_SERVER_URL}/courses/${courseId}/update-enrollment/`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrftoken,  // CSRF token from the cookie
                 },
                 credentials: 'include',
+                body: JSON.stringify({
+                    "student-id": studentID
+                })
             })
                 .then((response) => {
                     console.log(response)

@@ -20,7 +20,7 @@ const FacultyLandingPage = () => {
         navigate('/change-password');
         break;
       case 5:
-        navigate('/home'); // Redirect to Home page for Logout
+        setTimeout(() => navigate("/logout"), 2000) // Redirect to Home page for Logout
         break;
       default:
         break;

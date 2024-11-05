@@ -13,12 +13,26 @@ const ChangePasswordPage = () => {
         if (newPassword !== confirmPassword) {
             setMessage('Failure: New passwords do not match.');
         } else if (currentPassword && newPassword) {
-            // Here you would save the new password to the database.
-            // This is a placeholder for a save operation, e.g., an API call.
-            // savePassword(currentPassword, newPassword);
+            fetch(`${process.env.REACT_APP_SERVER_URL}/changepassword/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    "old_password": currentPassword,
+                    "new_password": newPassword
+                }),
+
+            })
+                .then((response) => {
+                    console.log(response)
+                    alert("Password Changed")
+                })
+                .catch((error) => console.error(error));
 
             setMessage('Success: Password updated successfully.');
-            setTimeout(() => navigate('/faculty'), 2000); // Redirect after 2 seconds
+            setTimeout(() => navigate('/logout'), 2000); // Redirect after 2 seconds
         } else {
             setMessage('Failure: Please fill in all fields.');
         }

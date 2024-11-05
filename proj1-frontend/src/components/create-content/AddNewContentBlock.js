@@ -25,12 +25,14 @@ function AddNewContentBlock() {
         // Clear the input field and go back to the previous page
         setContentBlockID("");
         //onGoBack();
+        navigate(-1)
     };
 
     const handleLandingPage = () => {
         // Clear input and navigate to the landing page
         setContentBlockID("");
         //onGoLandingPage();
+        navigate(`${role}`)
     };
 
     const createContentBlock = () => {
