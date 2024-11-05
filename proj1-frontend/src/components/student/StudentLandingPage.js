@@ -105,9 +105,7 @@ const StudentLanding = () => {
         setSelectedOption(option);
 
         if (option === 1) {
-            saveToDatabase("Viewed a section");
-            alert("Record saved. Returning to previous page.");
-            setSelectedOption(null); // Reset to go back to the previous page
+            navigate("/student/section", { state: { studentData: data.courses } })
         } else if (option === 2) {
             alert("Participation activity points viewed. Returning to previous page.");
             setSelectedOption(null);

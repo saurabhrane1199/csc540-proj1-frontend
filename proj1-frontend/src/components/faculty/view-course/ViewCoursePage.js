@@ -8,8 +8,12 @@ const ViewCoursesPage = () => {
 
     const navigate = useNavigate();
     const [assignedCourses, setAssignedCourses] = useState([])
+    const [role, setUserRole] = useState('faculty')
 
     useEffect(() => {
+
+        setUserRole(localStorage.getItem("role"))
+
         const fetchData = async () => {
             try {
                 fetch(`${process.env.REACT_APP_SERVER_URL}/courses/all/`, {
@@ -38,7 +42,7 @@ const ViewCoursesPage = () => {
 
     // Function to handle the "Go Back" option
     const handleGoBack = () => {
-        navigate('/faculty');
+        navigate(`/${role}`);
     };
 
     return (

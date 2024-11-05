@@ -37,6 +37,8 @@ import DeleteContentBlock from './components/create-content/DeleteContentBlock';
 import CourseEnrollmentPage from './components/student/EnrollmentPage';
 import StudentPreLogin from './components/student/StudentPreLogin';
 import LogOut from './components/logout';
+import StudentViewSection from './components/student/ViewSection';
+import StudentViewBlock from './components/student/ViewBlock';
 
 
 
@@ -80,6 +82,8 @@ root.render(
         <Route path="/student" element={<StudentLandingPage />}></Route>
         <Route path="/student/enroll" element={<CourseEnrollmentPage />}></Route>
         <Route path="/student/prelogin" element={<StudentPreLogin />}></Route>
+        <Route path="/student/block" element={<StudentViewBlock />}></Route>
+        <Route path="/student/section" element={<StudentViewSection />}></Route>
         <Route path="/change-password" element={<ChangePasswordPage />}></Route>
 
       </Routes>

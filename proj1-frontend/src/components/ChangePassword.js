@@ -20,7 +20,7 @@ const ChangePasswordPage = () => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    "old_password": currentPassword,
+                    "current_password": currentPassword,
                     "new_password": newPassword
                 }),
 
