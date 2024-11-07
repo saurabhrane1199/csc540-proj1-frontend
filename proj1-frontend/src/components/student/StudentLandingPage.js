@@ -12,8 +12,7 @@ const ContentBlock = ({ block }) => {
         <div className="content-block">
             <h5>{block.content_name}</h5>
             {block.block_type === 'text' && <p>{block.text_data}</p>}
-            {block.block_type === 'image' && <img src={`${process.env.REACT_APP_SERVER_URL}${block.image_data}`}></img>}
-            {block.block_type === 'activities' && <p>Activity</p>}
+            {block.block_type === '' && <p>Activity</p>}
         </div>
     );
 };
