@@ -12,17 +12,26 @@ const StudentViewSection = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [studentData, setStudentData] = useState(location.state?.studentData?.[0] || {})
+    const [studentData, setStudentData] = useState(location.state?.studentData || {})
+
 
     const filterOutStudentData = () => {
         let contentBlocks = [];
-        studentData.textbooks.forEach((textbook) => {
-            if (textbook.textbook_id == textbookID) {
-                textbook.chapters.forEach((chapter) => {
-                    if (chapter.chapter_name == chapterID) {
-                        chapter.sections.forEach((section) => {
-                            if (section.number == sectionID) {
-                                contentBlocks.push(...section.content);
+        studentData.forEach((course) => {
+            if (course.course_id == courseID) {
+                console.log("Inside Textbook")
+                course.textbooks.forEach((textbook) => {
+                    if (textbook.textbook_id == textbookID) {
+                        console.log("Inside Textbook")
+                        textbook.chapters.forEach((chapter) => {
+                            if (chapter.chapter_name == chapterID) {
+                                console.log("Inside Chapter")
+                                chapter.sections.forEach((section) => {
+                                    if (section.number == sectionID) {
+                                        console.log("Inside Block")
+                                        contentBlocks.push(...section.content);
+                                    }
+                                });
                             }
                         });
                     }

@@ -28,6 +28,7 @@ const StudentViewBlock = () => {
     const currentBlock = blocks[currentBlockIndex];
 
     const renderActivity = (activities) => {
+        console.log(activities)
         return (
             activities.map((activity, activityIndex) => (
                 <div key={activityIndex}>
@@ -55,7 +56,7 @@ const StudentViewBlock = () => {
                         </div>
                     ))}
                     <button disabled={userAnswerSubmitted?.[activityIndex] || false} onClick={() => handleMenuSelection(1, activityIndex)}>
-                        {currentBlock.type === 'content' ? 'Next' : 'Next/Submit'}
+                        {currentBlock?.type === 'content' ? 'Next' : 'Next/Submit'}
                     </button>
                 </div>
             ))
@@ -63,12 +64,12 @@ const StudentViewBlock = () => {
     };
 
     const renderPage = (block) => {
-        switch (block.block_type) {
+        switch (block?.block_type) {
             case "text":
                 return <p>{block.text_data}</p>;
             case "image":
                 return <img src={block.image_data}></img>;
-            case "":
+            case "activities":
                 return renderActivity(block.activities)
         }
     };
