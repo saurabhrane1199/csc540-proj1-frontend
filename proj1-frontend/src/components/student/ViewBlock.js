@@ -161,8 +161,8 @@ const StudentViewBlock = () => {
                         })
                         .catch((error) => console.error(error));
                 }
-                // alert("End of blocks. Returning to the landing page.");
-                // navigate('/student')
+                alert("End of blocks. Returning to the landing page.");
+                navigate('/student')
 
             }
         } else if (option === 2) {
