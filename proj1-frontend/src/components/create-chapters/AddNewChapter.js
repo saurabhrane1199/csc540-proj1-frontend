@@ -40,6 +40,10 @@ function AddNewChapter() {
         })
             .then((response) => {
                 console.log(response)
+                if (!response.ok) {
+                    alert("Error Occured")
+                    return
+                }
                 alert("Chapter created")
                 setshowNextOptions(true)
             })

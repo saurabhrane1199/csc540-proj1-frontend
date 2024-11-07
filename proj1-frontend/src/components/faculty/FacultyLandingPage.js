@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const FacultyLandingPage = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let role = localStorage.getItem("role")
+    if (role != "faculty") {
+      navigate(`/${role}`)
+    }
+  })
 
   // Function to handle menu option selection
   const handleOptionSelect = (option) => {

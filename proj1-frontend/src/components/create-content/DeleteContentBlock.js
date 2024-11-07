@@ -38,7 +38,11 @@ const DeleteContentBlock = () => {
             })
                 .then((response) => {
                     console.log(response)
-                    alert("Chapter Delete")
+                    if (!response.ok) {
+                        alert("Error Occured")
+                        return
+                    }
+                    alert("Content Block Deleted")
                 })
                 .catch((error) => console.error(error));
             setMessage('Success: Content block has been deleted!');

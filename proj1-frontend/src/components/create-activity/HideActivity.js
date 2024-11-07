@@ -40,7 +40,11 @@ const HideActivity = () => {
             })
                 .then((response) => {
                     console.log(response)
-                    alert("Chapter Delete")
+                    if (!response.ok) {
+                        alert("Error Occured")
+                        return
+                    }
+                    alert("Activity Hidden")
                 })
                 .catch((error) => console.error(error));
             setMessage('Success: Activity has been hidden!');

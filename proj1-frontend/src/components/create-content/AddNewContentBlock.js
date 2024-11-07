@@ -55,6 +55,10 @@ function AddNewContentBlock() {
             })
                 .then((response) => {
                     console.log(response)
+                    if (!response.ok) {
+                        alert("Error Occured")
+                        return
+                    }
                     alert("Content Block created")
                     setContentBlockCreated(true)
                 })

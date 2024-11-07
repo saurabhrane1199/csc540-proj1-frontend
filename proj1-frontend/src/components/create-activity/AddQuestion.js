@@ -70,6 +70,10 @@ const AddQuestionForm = () => {
             })
                 .then((response) => {
                     console.log(response)
+                    if (!response.ok) {
+                        alert("Error Occured")
+                        return
+                    }
                     alert("Question created")
                 })
                 .catch((error) => console.error(error));

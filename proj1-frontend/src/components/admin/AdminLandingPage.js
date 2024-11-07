@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './AdminLandingPage.css'
 import CreateFacultyAccount from '../create-accounts/CreateFacultyAccount';
 import CreateETextbook from '../create-textbook/CreateETextbook';
@@ -15,6 +15,13 @@ function AdminLandingPage() {
     const handleGoBack = () => {
         setSelectedPage(null);
     };
+
+    useEffect(() => {
+        let role = localStorage.getItem("role")
+        if (role != "admin") {
+            navigate(`/${role}`)
+        }
+    })
 
 
 

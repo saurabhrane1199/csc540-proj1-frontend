@@ -45,9 +45,18 @@ function AddPicture() {
 
             // Make the fetch call
             fetch(`${process.env.REACT_APP_SERVER_URL}/contents/${contentBlockID}/image/`, requestOptions)
-                .then((response) => response.text())
+                .then((response) => {
+                    if (!response.ok) {
+                        alert("Error Occured")
+                        return
+                    }
+                    return response.text()
+                })
+
                 .then((result) => {
+
                     console.log(result);
+                    alert("Picture Added")
                 })
                 .catch((error) => console.error("Error:", error));
         } else {

@@ -5,7 +5,9 @@ const StudentViewSection = () => {
     const [chapterID, setChapterID] = useState('');
     const [sectionID, setSectionID] = useState('');
     const [textbookID, setTextbookID] = useState('');
+    const [courseID, setCourseID] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
+
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,7 +40,7 @@ const StudentViewSection = () => {
 
         if (option === 1) {
             alert(`Navigating to Chapter ${chapterID}, Section ${sectionID}`);
-            navigate('/student/block', { state: { contentBlocks: filterOutStudentData() } })
+            navigate('/student/block', { state: { courseID: courseID, chapterID: chapterID, sectionID: sectionID, textbookID: textbookID, contentBlocks: filterOutStudentData() } })
             setSelectedOption(null); // Reset to go back to the previous page after action
         } else if (option === 2) {
             alert("Going back to the landing page.");
@@ -54,16 +56,25 @@ const StudentViewSection = () => {
             <h2>View Section</h2>
             <div className="input-section">
                 <label>
-                    A. TextBook ID:
+                    A. Course ID:
+                    <input
+                        type="text"
+                        value={courseID}
+                        onChange={(e) => setCourseID(e.target.value)}
+                        placeholder="Enter Course ID"
+                    />
+                </label>
+                <label>
+                    B. TextBook ID:
                     <input
                         type="text"
                         value={textbookID}
                         onChange={(e) => setTextbookID(e.target.value)}
-                        placeholder="Enter Chapter ID"
+                        placeholder="Enter Textbook ID"
                     />
                 </label>
                 <label>
-                    A. Chapter ID:
+                    C. Chapter ID:
                     <input
                         type="text"
                         value={chapterID}
@@ -73,7 +84,7 @@ const StudentViewSection = () => {
                 </label>
                 <br />
                 <label>
-                    B. Section ID:
+                    D. Section ID:
                     <input
                         type="text"
                         value={sectionID}

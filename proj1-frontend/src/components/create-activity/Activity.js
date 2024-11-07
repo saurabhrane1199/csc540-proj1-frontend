@@ -52,7 +52,11 @@ const ActivityForm = () => {
         })
             .then((response) => {
                 console.log(response)
-                alert("Textbook created")
+                if (!response.ok) {
+                    alert("Error Occured")
+                    return
+                }
+                alert("Activity created")
             })
             .catch((error) => console.error(error));
 

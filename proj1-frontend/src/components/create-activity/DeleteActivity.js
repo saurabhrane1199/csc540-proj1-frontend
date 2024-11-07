@@ -39,7 +39,11 @@ const DeleteActivity = () => {
             })
                 .then((response) => {
                     console.log(response)
-                    alert("Chapter Delete")
+                    if (!response.ok) {
+                        alert("Error Occured")
+                        return
+                    }
+                    alert("Activity Deleted")
                 })
                 .catch((error) => console.error(error));
             setMessage('Success: Activity has been deleted!');

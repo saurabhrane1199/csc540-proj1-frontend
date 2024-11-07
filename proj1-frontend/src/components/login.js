@@ -40,21 +40,21 @@ function Login() {
         }),
       })
         .then((result) => {
+          console.log(result.ok)
           return result.json()
+
         })
         .then((data) => {
-          if (data.message === 'success') {
-            setMessage(`Welcome ${userType}!`);
-            navigate('/admin')
-          } else {
-            setMessage('Login Incorrect. Please try again.');
+          if (data.error === "Invalid credentials") {
+            alert("Invalid Credentials")
+          } else if (data.message === "success") {
+            alert("User Logged In")
+            const cookieValue = Cookies.get('role');
+            if (cookieValue) {
+              localStorage.setItem('role', cookieValue);
+            }
+            navigate(`/${cookieValue}`)
           }
-
-          const cookieValue = Cookies.get('role');
-          if (cookieValue) {
-            localStorage.setItem('role', cookieValue);
-          }
-          navigate(`/${cookieValue}`)
         });
     } catch (error) {
       console.error('Error:', error);

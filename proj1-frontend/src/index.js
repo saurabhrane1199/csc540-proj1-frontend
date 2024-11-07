@@ -39,6 +39,8 @@ import StudentPreLogin from './components/student/StudentPreLogin';
 import LogOut from './components/logout';
 import StudentViewSection from './components/student/ViewSection';
 import StudentViewBlock from './components/student/ViewBlock';
+import StudentParticipationPoints from './components/student/StudentParticipationPoints';
+import Query from './components/Query';
 
 
 
@@ -84,7 +86,9 @@ root.render(
         <Route path="/student/prelogin" element={<StudentPreLogin />}></Route>
         <Route path="/student/block" element={<StudentViewBlock />}></Route>
         <Route path="/student/section" element={<StudentViewSection />}></Route>
+        <Route path="/student/points" element={<StudentParticipationPoints />}></Route>
         <Route path="/change-password" element={<ChangePasswordPage />}></Route>
+        <Route path="/query" element={<Query />}></Route>
 
       </Routes>
     </Router>

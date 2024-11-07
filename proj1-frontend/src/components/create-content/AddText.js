@@ -45,7 +45,12 @@ function AddText() {
 
             })
                 .then((response) => {
+                    if (!response.ok) {
+                        alert("Error Occured")
+                        return
+                    }
                     console.log(response)
+                    alert("Text Added")
                 })
                 .catch((error) => console.error(error));
         }

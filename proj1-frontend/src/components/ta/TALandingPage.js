@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function TALandingPage() {
 
     const navigate = useNavigate();
+
+
+
+    useEffect(() => {
+        let role = localStorage.getItem("role")
+        if (role != "ta") {
+            navigate(`/${role}`)
+        }
+    })
+
 
     // Function to handle menu option selection
     const handleOptionSelect = (option) => {

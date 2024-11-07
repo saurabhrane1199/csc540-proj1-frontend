@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import apiUrl from "../../env";
 
 function CreateFacultyAccount({ onGoBack }) {
@@ -6,6 +7,15 @@ function CreateFacultyAccount({ onGoBack }) {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        let role = localStorage.getItem("role")
+        if (role != "admin") {
+            navigate(`/${role}`)
+        }
+    })
 
     const handleSubmit = async () => {
         // Mock API call to save the faculty account

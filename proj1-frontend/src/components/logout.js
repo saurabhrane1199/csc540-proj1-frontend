@@ -10,7 +10,7 @@ const LogOut = () => {
     useEffect(() => {
         localStorage.clear();
         Cookies.remove('role');
-        Cookies.remove('use_id');
+        Cookies.remove('user_id');
         navigate('/')
     })
 

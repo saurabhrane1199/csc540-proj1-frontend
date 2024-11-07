@@ -21,7 +21,7 @@ const DeleteChapter = () => {
         const saveSuccess = true; // Assume the save operation returns true if successful
 
         if (saveSuccess) {
-            fetch(`${process.env.REACT_APP_SERVER_URL}/chapters/${input}`, {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/chapters/${input}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,6 +35,10 @@ const DeleteChapter = () => {
             })
                 .then((response) => {
                     console.log(response)
+                    if (!response.ok) {
+                        alert("Error Occured")
+                        return
+                    }
                     alert("Chapter Delete")
                 })
                 .catch((error) => console.error(error));

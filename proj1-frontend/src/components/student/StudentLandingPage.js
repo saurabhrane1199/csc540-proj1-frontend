@@ -75,6 +75,12 @@ const StudentLanding = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        let role = localStorage.getItem("role")
+        if (role != "student") {
+            navigate(`/${role}`)
+        }
+
         const fetchData = async () => {
             try {
                 fetch(`${process.env.REACT_APP_SERVER_URL}/students/home/`, {
@@ -107,7 +113,7 @@ const StudentLanding = () => {
         if (option === 1) {
             navigate("/student/section", { state: { studentData: data.courses } })
         } else if (option === 2) {
-            alert("Participation activity points viewed. Returning to previous page.");
+            navigate("/student/points")
             setSelectedOption(null);
         } else if (option === 3) {
             alert("Logging out. Redirecting to User Landing Page.");

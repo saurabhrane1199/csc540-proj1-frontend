@@ -27,7 +27,12 @@ const ChangePasswordPage = () => {
             })
                 .then((response) => {
                     console.log(response)
-                    alert("Password Changed")
+                    if (response.ok) {
+                        alert("Password Changed")
+                    } else {
+                        return
+                    }
+
                 })
                 .catch((error) => console.error(error));
 

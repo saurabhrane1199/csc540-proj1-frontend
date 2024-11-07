@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { csrftoken } from '../../csrftoken';
 import apiUrl from '../../env';
+import { useNavigate } from 'react-router-dom';
 
 const CreateEvaluationCourseForm = ({ onGoBack }) => {
     const [courseDetails, setCourseDetails] = useState({
@@ -12,6 +13,13 @@ const CreateEvaluationCourseForm = ({ onGoBack }) => {
         endDate: ''
     });
     const [menuChoice, setMenuChoice] = useState(null);
+    const navigate = useNavigate();
+    useEffect(() => {
+        let role = localStorage.getItem("role")
+        if (role != "admin") {
+            navigate(`/${role}`)
+        }
+    })
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
