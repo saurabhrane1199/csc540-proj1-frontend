@@ -76,7 +76,7 @@ const StudentViewBlock = () => {
 
     const handleMenuSelection = (option, activityIndex) => {
         if (option === 1) {
-            if (currentBlock.block_type === 'activities' && userAnswer[activityIndex] != currentBlock.activities[activityIndex].question.answer) {
+            if (currentBlock.block_type === 'activities' && activityIndex !== null && userAnswer[activityIndex] != currentBlock.activities[activityIndex].question.answer) {
                 alert("Incorrect answer. Please try again or view the explanation.");
                 setShowExplanation((prevDetails) => ({ ...prevDetails, [activityIndex]: true }));
                 return;
@@ -124,7 +124,7 @@ const StudentViewBlock = () => {
                 setCurrentBlockIndex(currentBlockIndex + 1);
                 setUserAnswer('');
             } else {
-                if (currentBlock.block_type === 'activities') {
+                if (currentBlock.block_type === 'activities' && activityIndex !== null) {
                     userAnswerSubmitted[activityIndex] = true
                     fetch(`${process.env.REACT_APP_SERVER_URL}/students/submit_activity/`, {
                         method: 'POST',
