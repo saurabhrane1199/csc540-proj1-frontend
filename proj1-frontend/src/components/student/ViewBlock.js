@@ -13,7 +13,7 @@ const StudentViewBlock = () => {
     const [currentBlockIndex, setCurrentBlockIndex] = useState(0);
     const [userAnswer, setUserAnswer] = useState({});
     const [userAnswerSubmitted, setUserAnswerSubmitted] = useState({});
-    const [showExplanation, setShowExplanation] = useState(false);
+    const [showExplanation, setShowExplanation] = useState({});
 
     const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ const StudentViewBlock = () => {
                                 />
                                 {`${option.option} : ${option.text}`}
                             </label>
-                            {showExplanation && (
+                            {showExplanation?.[activityIndex] && (
                                 <div className="explanation">
                                     <p>Explanation: {option.explanation}</p>
                                     <p>Score: {userAnswer === activity.question.answer ? "1" : "0"}</p>
@@ -78,7 +78,7 @@ const StudentViewBlock = () => {
         if (option === 1) {
             if (currentBlock.block_type === 'activities' && userAnswer[activityIndex] != currentBlock.activities[activityIndex].question.answer) {
                 alert("Incorrect answer. Please try again or view the explanation.");
-                setShowExplanation(true);
+                setShowExplanation((prevDetails) => ({ ...prevDetails, [activityIndex]: true }));
                 return;
             }
 
@@ -123,7 +123,6 @@ const StudentViewBlock = () => {
                 }
                 setCurrentBlockIndex(currentBlockIndex + 1);
                 setUserAnswer('');
-                setShowExplanation(false);
             } else {
                 if (currentBlock.block_type === 'activities') {
                     userAnswerSubmitted[activityIndex] = true
@@ -162,8 +161,8 @@ const StudentViewBlock = () => {
                         })
                         .catch((error) => console.error(error));
                 }
-                alert("End of blocks. Returning to the landing page.");
-                navigate('/student')
+                // alert("End of blocks. Returning to the landing page.");
+                // navigate('/student')
 
             }
         } else if (option === 2) {

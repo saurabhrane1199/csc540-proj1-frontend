@@ -56,6 +56,7 @@ const StudentViewSection = () => {
             setChapterID('');
             setSectionID('');
             setSelectedOption(null);
+            navigate(-1)
             // Go back to the landing page logic can go here
         }
     };
