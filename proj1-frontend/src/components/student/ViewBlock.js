@@ -75,14 +75,14 @@ const StudentViewBlock = () => {
 
     const handleMenuSelection = (option, activityIndex) => {
         if (option === 1) {
-            if (currentBlock.block_type === '' && userAnswer[activityIndex] != currentBlock.activities[activityIndex].question.answer) {
+            if (currentBlock.block_type === 'activities' && userAnswer[activityIndex] != currentBlock.activities[activityIndex].question.answer) {
                 alert("Incorrect answer. Please try again or view the explanation.");
                 setShowExplanation(true);
                 return;
             }
 
             if (currentBlockIndex < blocks.length - 1) {
-                if (currentBlock.block_type === '') {
+                if (currentBlock.block_type === 'activities') {
                     userAnswerSubmitted[activityIndex] = true
 
                     fetch(`${process.env.REACT_APP_SERVER_URL}/students/submit_activity/`, {
@@ -124,7 +124,7 @@ const StudentViewBlock = () => {
                 setUserAnswer('');
                 setShowExplanation(false);
             } else {
-                if (currentBlock.block_type === '') {
+                if (currentBlock.block_type === 'activities') {
                     userAnswerSubmitted[activityIndex] = true
                     fetch(`${process.env.REACT_APP_SERVER_URL}/students/submit_activity/`, {
                         method: 'POST',
